@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -48,6 +49,9 @@ class _weatherPageState extends State<weatherPage> {
         weatherData.coord!.lat.toString(), weatherData.coord!.lon.toString());
   }
 
+  int sec = 1;
+  Timer? refresh;
+  @override
   @override
   Widget build(BuildContext context) {
     var screen_width = MediaQuery.sizeOf(context).width;

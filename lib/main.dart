@@ -4,14 +4,23 @@ import 'package:weatherapp/logic/cubits/weather_cubits/weather_cubit.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weatherapp/presentation/screens/homepage.dart';
 import 'package:flutter/services.dart';
+import 'package:weatherapp/presentation/screens/weatherpage.dart';
 
 Position? position;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   LocationPermission permission = await Geolocator.requestPermission();
-  position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high);
+  if (permission == LocationPermission.denied ||
+      permission == LocationPermission.deniedForever) {
+    print("Permissions not given");
+    LocationPermission asked = await Geolocator.requestPermission();
+  } else {
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    print(
+        '${position!.latitude.toString()} + ${position!.longitude.toString()}');
+  }
   runApp(const MyApp());
 }
 
